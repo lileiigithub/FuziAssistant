@@ -13,11 +13,15 @@ class Person(object):
 
 
 class Relationship(object):
+    pass
+
+class MatchPerson(object):
 
     def __init__(self, _younger_person_obj, _older_person_obj, _relation):
         self.younger = _younger_person_obj
         self.relation = _relation
         self.elderName = _older_person_obj
+
 
     def savePersonInfo(self):
         pass
@@ -27,7 +31,6 @@ class Relationship(object):
 
     def saveDemandInfo(self):
         pass
-
 
 class Demand(object):
     pass
