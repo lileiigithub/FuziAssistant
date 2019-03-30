@@ -28,7 +28,7 @@ class Database(object):
         FzLog.info("Create database fuzi.db successfully")
 
     @staticmethod
-    def insert_family_info(_id,_family_index,_young_name,_young_gender,
+    def insert_a_family_info(_id,_family_index,_young_name,_young_gender,
                     _relation,_old_name,_old_gender):
         conn = sqlite3.connect(Database.database_file)
         c = conn.cursor()
@@ -51,8 +51,19 @@ class Database(object):
 
     @staticmethod
     def last_id():
-        pass
+        conn = sqlite3.connect(Database.database_file)
+        c = conn.cursor()
+        COMMAND = '''SELECT ID FROM FAMILY_INFO'''
+        c.execute(COMMAND)
+        # conn.commit()
+        ids = []
+        for row in c:
+            ids.append(row[0])
+        conn.close()
+        return ids[-1]
+
 
 if __name__ == '__main__':
     db = Database()
-    db.insert_family_info(1,1,"赵",1,"爷爷","钱",1)
+    # db.insert_a_family_info(2,1,"赵",1,"爷爷","钱",1)
+    db.last_id()
