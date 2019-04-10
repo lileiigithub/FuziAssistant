@@ -6,8 +6,8 @@
 from PyQt5.QtCore import QFile, QFileInfo, QSettings, Qt, QTextStream,QThread
 from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLabel,QPushButton,QWidget,QSpacerItem,
-                             QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout)
-from PyQt5 import QtWidgets
+                             QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
+                             QTabWidget)
 from datetime import datetime
 from config import Config
 
@@ -20,24 +20,25 @@ class MainWindow(QMainWindow):
         self.recentFileActs = []
         # 将mainwindow的中心组件设置为widget,然后在里面布局
         self.setAttribute(Qt.WA_DeleteOnClose)
-        self.widget = QWidget()
-        self.setCentralWidget(self.widget)
+        self.mainwidget = QWidget()
+        self.setCentralWidget(self.mainwidget)
         self.createActions()
         self.createMenus()
         self.statusBar()
-        # self.toolBarArea()
 
         #主界面
-        self.img_label = QLabel("接收的原始岩土图像")
-        self.img_label.setAlignment(Qt.AlignCenter) # label 居中
-        self.img_label.setFont(QFont("Roman times", 14)) #, QFont.Bold
-        self.raw_img_view = QGraphicsView()
-        # self.hide_button.setVisible(False)
+        self.tabWigdet = QTabWidget()
+        self.tabNewFamily = QWidget()
+        self.tabSearch = QWidget()
+        self.tabWigdet.addTab(self.tabNewFamily,"新建")
+        self.tabWigdet.addTab(self.tabSearch, "查询")
+        self.tabWigdet.setTabPosition(QTabWidget.West)
         # 布局
         mainlayout = QHBoxLayout()
+        mainlayout.addWidget(self.tabWigdet)
         # mainlayout.addLayout(left_layout)
         # mainlayout.addLayout(right_layout)
-        self.widget.setLayout(mainlayout)
+        self.mainwidget.setLayout(mainlayout)
         #
         self.setWindowTitle("福纸")
         self.setGeometry(250,100,1080,820) # posx,posy,w,h
@@ -47,6 +48,14 @@ class MainWindow(QMainWindow):
 
         self.networkset = None  # 网络设置
         self.ReceiceImgThread = None # 多线程
+
+    def tabNewFamilyUI(self):
+        layout = QFormLayout()
+        layout.addRow("Name", QLineEdit())
+        layout.addRow("Address", QLineEdit())
+        self.setTabText(0, "Contact Details")
+        self.tab1.setLayout(layout)
+
 
     def newFile(self):
         other = MainWindow()
