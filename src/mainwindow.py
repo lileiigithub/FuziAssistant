@@ -7,7 +7,7 @@ from PyQt5.QtCore import QFile, QFileInfo, QSettings, Qt, QTextStream,QThread
 from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLabel,QPushButton,QWidget,QSpacerItem,
                              QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
-                             QTabWidget,QLineEdit)
+                             QTabWidget,QLineEdit,QDialog)
 from datetime import datetime
 from config import Config
 
@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         self.tabWigdet.addTab(self.tabNewFamily,"新建")
         self.tabWigdet.addTab(self.tabSearch, "查询")
         self.tabWigdet.setTabPosition(QTabWidget.West)
-        self.tabNewFamilyUI()
+        self.tabFamilyUI()
         # 布局
         mainlayout = QHBoxLayout()
         mainlayout.addWidget(self.tabWigdet)
@@ -50,7 +50,16 @@ class MainWindow(QMainWindow):
         self.networkset = None  # 网络设置
         self.ReceiceImgThread = None # 多线程
 
-    def tabNewFamilyUI(self):
+    def tabFamilyUI(self):
+        self.addButton = QPushButton("添加")
+        self.addButton.clicked.connect(self.addInfoDialog)
+        layout = QHBoxLayout()
+        layout.addWidget(self.addButton)
+        self.tabNewFamily.setLayout(layout)
+
+    def addInfoDialog(self):
+        infoDialog = QDialog()
+        infoDialog.setWindowTitle("添加成员")
         layout_young = QVBoxLayout()
         label1 = QLabel("晚辈")
         line1 = QLineEdit()
@@ -62,12 +71,13 @@ class MainWindow(QMainWindow):
         line2 = QLineEdit()
         layout_old.addWidget(label2)
         layout_old.addWidget(line2)
+        mainLayout = QHBoxLayout()
+        mainLayout.addLayout(layout_young)
+        mainLayout.addLayout(layout_old)
+        # infoDialog.show()
 
-        layout = QHBoxLayout()
-        layout.addLayout(layout_young)
-        layout.addLayout(layout_old)
-        self.tabNewFamily.setLayout(layout)
-
+    def addNewFamilyInfoUI(self):
+        pass
 
     def newFile(self):
         other = MainWindow()
