@@ -7,7 +7,7 @@ from PyQt5.QtCore import QFile, QFileInfo, QSettings, Qt, QTextStream,QThread
 from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLabel,QPushButton,QWidget,QSpacerItem,
                              QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
-                             QTabWidget)
+                             QTabWidget,QLineEdit)
 from datetime import datetime
 from config import Config
 
@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         self.tabWigdet.addTab(self.tabNewFamily,"新建")
         self.tabWigdet.addTab(self.tabSearch, "查询")
         self.tabWigdet.setTabPosition(QTabWidget.West)
+        self.tabNewFamilyUI()
         # 布局
         mainlayout = QHBoxLayout()
         mainlayout.addWidget(self.tabWigdet)
@@ -50,11 +51,22 @@ class MainWindow(QMainWindow):
         self.ReceiceImgThread = None # 多线程
 
     def tabNewFamilyUI(self):
-        layout = QFormLayout()
-        layout.addRow("Name", QLineEdit())
-        layout.addRow("Address", QLineEdit())
-        self.setTabText(0, "Contact Details")
-        self.tab1.setLayout(layout)
+        layout_young = QVBoxLayout()
+        label1 = QLabel("晚辈")
+        line1 = QLineEdit()
+        layout_young.addWidget(label1)
+        layout_young.addWidget(line1)
+
+        layout_old = QVBoxLayout()
+        label2 = QLabel("长辈")
+        line2 = QLineEdit()
+        layout_old.addWidget(label2)
+        layout_old.addWidget(line2)
+
+        layout = QHBoxLayout()
+        layout.addLayout(layout_young)
+        layout.addLayout(layout_old)
+        self.tabNewFamily.setLayout(layout)
 
 
     def newFile(self):
