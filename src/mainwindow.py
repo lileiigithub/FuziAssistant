@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLa
                              QTabWidget,QLineEdit,QDialog)
 from datetime import datetime
 from config import Config
+from addInfoDialog import AddInfoDialog
 
 class MainWindow(QMainWindow):
     windowList = []
@@ -52,28 +53,14 @@ class MainWindow(QMainWindow):
 
     def tabFamilyUI(self):
         self.addButton = QPushButton("添加")
-        self.addButton.clicked.connect(self.addInfoDialog)
+        self.addButton.clicked.connect(self.showaddInfoDialog)
         layout = QHBoxLayout()
         layout.addWidget(self.addButton)
         self.tabNewFamily.setLayout(layout)
 
-    def addInfoDialog(self):
-        infoDialog = QDialog()
-        infoDialog.setWindowTitle("添加成员")
-        layout_young = QVBoxLayout()
-        label1 = QLabel("晚辈")
-        line1 = QLineEdit()
-        layout_young.addWidget(label1)
-        layout_young.addWidget(line1)
-
-        layout_old = QVBoxLayout()
-        label2 = QLabel("长辈")
-        line2 = QLineEdit()
-        layout_old.addWidget(label2)
-        layout_old.addWidget(line2)
-        mainLayout = QHBoxLayout()
-        mainLayout.addLayout(layout_young)
-        mainLayout.addLayout(layout_old)
+    def showaddInfoDialog(self):
+        self.addInfodialog = AddInfoDialog()
+        self.addInfodialog.show()
         # infoDialog.show()
 
     def addNewFamilyInfoUI(self):
