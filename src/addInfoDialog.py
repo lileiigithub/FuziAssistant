@@ -1,8 +1,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QDialog,
         QDialogButtonBox, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit,
-        QPushButton, QVBoxLayout, QWidget,QComboBox)
-from socket import *
+        QPushButton, QVBoxLayout, QWidget,QComboBox,QRadioButton,QGroupBox)
 from config import Config
 
 class AddInfoDialog(QDialog):
@@ -12,22 +11,31 @@ class AddInfoDialog(QDialog):
         layout_young = QHBoxLayout()
         label1 = QLabel("晚辈")
         line_young_name = QLineEdit()
-        box_youngman = QCheckBox("男")
-        box_youngwoman = QCheckBox("女")
+        box_youngman = QRadioButton("男")
+        box_youngwoman = QRadioButton("女")
+        layout_youngGender = QHBoxLayout()
+        layout_youngGender.addWidget(box_youngman)
+        layout_youngGender.addWidget(box_youngwoman)
+        groupbox_youngGender = QGroupBox()
+        groupbox_youngGender.setLayout(layout_youngGender)
         layout_young.addWidget(label1)
         layout_young.addWidget(line_young_name)
-        layout_young.addWidget(box_youngman)
-        layout_young.addWidget(box_youngwoman)
+        layout_young.addWidget(groupbox_youngGender)
+
         # old
         layout_old = QHBoxLayout()
         label2 = QLabel("长辈")
         line_old_name = QLineEdit()
-        box_oldman = QCheckBox("男")
-        box_oldwoman = QCheckBox("女")
+        box_oldman = QRadioButton("男")
+        box_oldwoman = QRadioButton("女")
+        layout_oldGender = QHBoxLayout()
+        layout_oldGender.addWidget(box_oldman)
+        layout_oldGender.addWidget(box_oldwoman)
+        groupbox_oldGender = QGroupBox()
+        groupbox_oldGender.setLayout(layout_oldGender)
         layout_old.addWidget(label2)
         layout_old.addWidget(line_old_name)
-        layout_old.addWidget(box_oldman)
-        layout_old.addWidget(box_oldwoman)
+        layout_old.addWidget(groupbox_oldGender)
         # relationship
         layout_relation = QHBoxLayout()
         label3 = QLabel("关系")

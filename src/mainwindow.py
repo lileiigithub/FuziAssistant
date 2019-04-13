@@ -7,7 +7,7 @@ from PyQt5.QtCore import QFile, QFileInfo, QSettings, Qt, QTextStream,QThread
 from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLabel,QPushButton,QWidget,QSpacerItem,
                              QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
-                             QTabWidget,QLineEdit,QDialog)
+                             QTabWidget,QLineEdit,QDialog,QTableWidget)
 from datetime import datetime
 from config import Config
 from addInfoDialog import AddInfoDialog
@@ -52,16 +52,27 @@ class MainWindow(QMainWindow):
         self.ReceiceImgThread = None # 多线程
 
     def tabFamilyUI(self):
-        self.addButton = QPushButton("添加")
-        self.addButton.clicked.connect(self.showaddInfoDialog)
-        layout = QHBoxLayout()
-        layout.addWidget(self.addButton)
-        self.tabNewFamily.setLayout(layout)
+        self.addButton = QPushButton("新建家庭信息")
+        self.addButton.clicked.connect(self.showAddInfoDialog)
+        self.enterButton = QPushButton("提交家庭信息")
+        buttonLayout = QHBoxLayout()
+        buttonLayout.addWidget(self.addButton)
+        buttonLayout.addWidget(self.enterButton)
 
-    def showaddInfoDialog(self):
+        self.infoBoard = QTableWidget(1, 6)
+        newLayout = QVBoxLayout()
+        newLayout.addLayout(buttonLayout)
+        newLayout.addWidget(self.infoBoard)
+        self.tabNewFamily.setLayout(newLayout)
+
+    def showAddInfoDialog(self):
         self.addInfodialog = AddInfoDialog()
         self.addInfodialog.show()
         # infoDialog.show()
+
+    def pushInfo(self):
+        # 将数据写入数据库
+        pass
 
     def addNewFamilyInfoUI(self):
         pass
