@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QDialog,
         QDialogButtonBox, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit,
         QPushButton, QVBoxLayout, QWidget,QComboBox,QRadioButton,QGroupBox)
-from config import Config
+from config import Config,Data
 
 class AddInfoDialog(QDialog):
     def __init__(self, parent=None):
@@ -10,39 +10,41 @@ class AddInfoDialog(QDialog):
         # young
         layout_young = QHBoxLayout()
         label1 = QLabel("晚辈")
-        line_young_name = QLineEdit()
-        box_youngman = QRadioButton("男")
-        box_youngwoman = QRadioButton("女")
+        self.line_young_name = QLineEdit()
+        self.box_youngman = QRadioButton("男")
+        self.box_youngman.setChecked(True)
+        self.box_youngwoman = QRadioButton("女")
         layout_youngGender = QHBoxLayout()
-        layout_youngGender.addWidget(box_youngman)
-        layout_youngGender.addWidget(box_youngwoman)
+        layout_youngGender.addWidget(self.box_youngman)
+        layout_youngGender.addWidget(self.box_youngwoman)
         groupbox_youngGender = QGroupBox()
         groupbox_youngGender.setLayout(layout_youngGender)
         layout_young.addWidget(label1)
-        layout_young.addWidget(line_young_name)
+        layout_young.addWidget(self.line_young_name)
         layout_young.addWidget(groupbox_youngGender)
 
         # old
         layout_old = QHBoxLayout()
         label2 = QLabel("长辈")
-        line_old_name = QLineEdit()
-        box_oldman = QRadioButton("男")
-        box_oldwoman = QRadioButton("女")
+        self.line_old_name = QLineEdit()
+        self.box_oldman = QRadioButton("男")
+        self.box_oldman.setChecked(True)
+        self.box_oldwoman = QRadioButton("女")
         layout_oldGender = QHBoxLayout()
-        layout_oldGender.addWidget(box_oldman)
-        layout_oldGender.addWidget(box_oldwoman)
+        layout_oldGender.addWidget(self.box_oldman)
+        layout_oldGender.addWidget(self.box_oldwoman)
         groupbox_oldGender = QGroupBox()
         groupbox_oldGender.setLayout(layout_oldGender)
         layout_old.addWidget(label2)
-        layout_old.addWidget(line_old_name)
+        layout_old.addWidget(self.line_old_name)
         layout_old.addWidget(groupbox_oldGender)
         # relationship
         layout_relation = QHBoxLayout()
         label3 = QLabel("关系")
-        comb_relation = QComboBox()
-        comb_relation.addItems(Config.RELATIONSHIP)  # 添加关系选项
+        self.comb_relation = QComboBox()
+        self.comb_relation.addItems(Config.RELATIONSHIP)  # 添加关系选项
         layout_relation.addWidget(label3)
-        layout_relation.addWidget(comb_relation)
+        layout_relation.addWidget(self.comb_relation)
         # info layout
         layout_info = QVBoxLayout()
         layout_info.addLayout(layout_young)
@@ -65,13 +67,20 @@ class AddInfoDialog(QDialog):
         self.YesButton.clicked.connect(self.ok) # 连接信号与槽
 
     def ok(self):
-        # ip = self.ip_lineEdit.text()
-        # port = self.port_lineEdit.text()
-        # if port!="" and ip !="":
-        #     Data.address = (ip,int(port))
-        #     print("设置新网络连接：",Data.address)
-        self.close()
-        # return self.address
+        young_name = self.line_young_name.text()
+        old_name = self.line_old_name.text()
+        if young_name == "":
+            print("未填晚辈写姓名.")
+        elif old_name == "":
+            print("未填写长辈姓名.")
+        else:
+            Data.young_name = self.line_young_name.text()
+            Data.old_name = self.line_old_name.text()
+            Data.young_isMan = self.box_youngman.isChecked()
+            Data.old_isMan = self.box_youngwoman.isChecked()
+            Data.relation = self.comb_relation.currentText()
+            print(self.line_young_name.text(),self.line_old_name.text(),self.box_youngman.isChecked(),self.box_youngwoman.isChecked())
+            self.close()
 
     def cancel(self):
         self.close()

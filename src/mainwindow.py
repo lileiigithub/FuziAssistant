@@ -7,7 +7,7 @@ from PyQt5.QtCore import QFile, QFileInfo, QSettings, Qt, QTextStream,QThread
 from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLabel,QPushButton,QWidget,QSpacerItem,
                              QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
-                             QTabWidget,QLineEdit,QDialog,QTableWidget)
+                             QTabWidget,QLineEdit,QDialog,QTableWidget,QTableView)
 from datetime import datetime
 from config import Config
 from addInfoDialog import AddInfoDialog
@@ -59,7 +59,8 @@ class MainWindow(QMainWindow):
         buttonLayout.addWidget(self.addButton)
         buttonLayout.addWidget(self.enterButton)
 
-        self.infoBoard = QTableWidget(1, 6)
+        self.infoBoard = QTableView()
+        # self.infoBoard.setHorizontalHeader()
         newLayout = QVBoxLayout()
         newLayout.addLayout(buttonLayout)
         newLayout.addWidget(self.infoBoard)

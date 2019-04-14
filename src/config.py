@@ -6,3 +6,10 @@ class Config(object):
     RELATIONSHIP = ["爷爷","婆婆","外爷","外婆","父亲","母亲"]
     # lastFamilyNumber = None
     pass
+
+class Data(object):
+    young_name = None
+    young_isMan = None
+    old_name = None
+    old_isMan = None
+    relation = None
