@@ -50,7 +50,7 @@ class Database(object):
         return "'"+str(_value)+"'"+_comma
 
     @staticmethod
-    def last_id():
+    def last_id():  #  最后一个操作id
         conn = sqlite3.connect(Database.database_file)
         c = conn.cursor()
         COMMAND = '''SELECT ID FROM FAMILY_INFO'''
@@ -62,8 +62,21 @@ class Database(object):
         conn.close()
         return ids[-1]
 
+    @staticmethod
+    def last_familyIndex():  #  最后一个操作 family index
+        conn = sqlite3.connect(Database.database_file)
+        c = conn.cursor()
+        COMMAND = '''SELECT FAMILY_INDEX FROM FAMILY_INFO'''
+        c.execute(COMMAND)
+        # conn.commit()
+        ids = []
+        for row in c:
+            ids.append(row[0])
+        conn.close()
+        return ids[-1]
 
 if __name__ == '__main__':
     db = Database()
-    # db.insert_a_family_info(2,1,"赵",1,"爷爷","钱",1)
-    db.last_id()
+    db.insert_a_family_info(2,1,"赵",1,"爷爷","钱",1)
+    print(type(Database.last_id()),Database.last_id())
+    print(Database.last_familyIndex())

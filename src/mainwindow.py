@@ -4,13 +4,15 @@
 ##
 #############################################################################
 from PyQt5.QtCore import QFile, QFileInfo, QSettings, Qt, QTextStream,QThread
-from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64
+from PyQt5.QtGui import QKeySequence,QFont,QPixmap,QImage,QRgba64,QStandardItemModel,QStandardItem
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLabel,QPushButton,QWidget,QSpacerItem,
                              QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
                              QTabWidget,QLineEdit,QDialog,QTableWidget,QTableView)
 from datetime import datetime
-from config import Config
+from config import Config,GlobalData
 from addInfoDialog import AddInfoDialog
+from relationship import AFamily
+from fuziLog import FzLog
 
 class MainWindow(QMainWindow):
     windowList = []
@@ -45,35 +47,60 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("福纸")
         self.setGeometry(250,100,1080,820) # posx,posy,w,h
 
-        # self.chooseImgButton.clicked.connect(self.clicked_local_button) # 更新各种信息
-        # self.onlineButton.clicked.connect(self.clicked_online_button)  # 更新各种信息
-
-        self.networkset = None  # 网络设置
-        self.ReceiceImgThread = None # 多线程
-
     def tabFamilyUI(self):
         self.addButton = QPushButton("新建家庭信息")
         self.addButton.clicked.connect(self.showAddInfoDialog)
+        self.delButton = QPushButton("删除家庭信息")
+        self.delButton.clicked.connect(self.delInfo)
         self.enterButton = QPushButton("提交家庭信息")
+        self.enterButton.clicked.connect(self.pushFamilyInfo)
         buttonLayout = QHBoxLayout()
         buttonLayout.addWidget(self.addButton)
+        buttonLayout.addWidget(self.delButton)
         buttonLayout.addWidget(self.enterButton)
 
         self.infoBoard = QTableView()
+        self.setInfoBoard()  #  设置表格
         # self.infoBoard.setHorizontalHeader()
         newLayout = QVBoxLayout()
         newLayout.addLayout(buttonLayout)
         newLayout.addWidget(self.infoBoard)
         self.tabNewFamily.setLayout(newLayout)
 
+    def setInfoBoard(self):
+        self.model = QStandardItemModel(0,5)
+        self.model.setHorizontalHeaderLabels(['姓名','性别','关系','姓名','性别'])
+        self.infoBoard.setModel(self.model)
+
+    def updateTableView(self):
+        self.model.clear()
+        for aInfo in GlobalData.familyInfosList:
+            self.model.appendRow([QStandardItem("%s" % aInfo["young_name"]),
+                                  QStandardItem("%s" % ["女", "男"][aInfo["young_isMan"]]),
+                                  QStandardItem("%s" % aInfo["relation"]),
+                                  QStandardItem("%s" % aInfo["old_name"]),
+                                  QStandardItem("%s" % ["女", "男"][aInfo["old_isMan"]])])
+        self.infoBoard.show()  # 显示更新
+
     def showAddInfoDialog(self):
         self.addInfodialog = AddInfoDialog()
+        self.addInfodialog.infoFilledSIGNAL.connect(self.updateTableView)  #  将信号连接到槽
         self.addInfodialog.show()
-        # infoDialog.show()
 
-    def pushInfo(self):
-        # 将数据写入数据库
+        # infoDialog.show()
+    def delInfo(self):
         pass
+
+    def pushFamilyInfo(self):
+        if len(GlobalData.familyInfosList) == 0:  #  列表为空
+            FzLog.info("无数据写入.")
+            return
+        # 将一个家庭数据 写入数据库
+        theFamily = AFamily(GlobalData.lastFamilyIndex()+1)
+        theFamily.insert_family_info_list(GlobalData.familyInfosList)
+        FzLog.info("已将家庭信息写入数据库.")
+        GlobalData.familyInfosList = []   #  提交后清空familyInfosList列表
+        self.updateTableView()  # 跟新显示
 
     def addNewFamilyInfoUI(self):
         pass
@@ -118,18 +145,6 @@ class MainWindow(QMainWindow):
                                   statusTip="Show the Qt library's About box",
                                   triggered=QApplication.instance().aboutQt)
 
-        # self.cameraSet = QAction("下位机摄像头设置", self,
-        #                          statusTip="设置摄像头参数",
-        #                          triggered=self.cameraSetDialog)
-
-        # self.networkSet = QAction("下位机ip地址设置", self,
-        #                          statusTip="设置网络连接",
-        #                          triggered=self.networkDialog)
-
-        # self.denoiseSet = QAction("去噪算法选择", self,
-        #                          statusTip="去噪算法选择",
-        #                          triggered=self.denoiseDialog)
-
     def createMenus(self):
         # 创建菜单
         self.fileMenu = self.menuBar().addMenu("&文件")
@@ -142,10 +157,6 @@ class MainWindow(QMainWindow):
 
         self.menuBar().addSeparator()
         self.setting = self.menuBar().addMenu("&设置")
-        # self.setting.addAction(self.cameraSet)
-        # self.setting.addAction(self.networkSet)
-        # self.setting.addAction(self.denoiseSet)
-
         self.helpMenu = self.menuBar().addMenu("&帮助")
         self.helpMenu.addAction(self.aboutAct)
         self.helpMenu.addAction(self.aboutQtAct)

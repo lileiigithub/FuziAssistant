@@ -1,10 +1,12 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt,pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QDialog,
         QDialogButtonBox, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit,
         QPushButton, QVBoxLayout, QWidget,QComboBox,QRadioButton,QGroupBox)
-from config import Config,Data
+from config import Config,GlobalData
+from fuziLog import FzLog
 
 class AddInfoDialog(QDialog):
+    infoFilledSIGNAL = pyqtSignal()   #  自定义信号，表单填写完成就发射改信号
     def __init__(self, parent=None):
         super(AddInfoDialog, self).__init__(parent)
         # young
@@ -70,16 +72,18 @@ class AddInfoDialog(QDialog):
         young_name = self.line_young_name.text()
         old_name = self.line_old_name.text()
         if young_name == "":
-            print("未填晚辈写姓名.")
+            FzLog.info("未填写晚辈姓名.")
         elif old_name == "":
-            print("未填写长辈姓名.")
+            FzLog.info("未填写长辈姓名.")
         else:
-            Data.young_name = self.line_young_name.text()
-            Data.old_name = self.line_old_name.text()
-            Data.young_isMan = self.box_youngman.isChecked()
-            Data.old_isMan = self.box_youngwoman.isChecked()
-            Data.relation = self.comb_relation.currentText()
-            print(self.line_young_name.text(),self.line_old_name.text(),self.box_youngman.isChecked(),self.box_youngwoman.isChecked())
+            GlobalData.AFamilyInfo["young_name"] = self.line_young_name.text()
+            GlobalData.AFamilyInfo["old_name"] = self.line_old_name.text()
+            GlobalData.AFamilyInfo["young_isMan"] = self.box_youngman.isChecked()
+            GlobalData.AFamilyInfo["old_isMan"] = self.box_oldman.isChecked()
+            GlobalData.AFamilyInfo["relation"] = self.comb_relation.currentText()
+            GlobalData.familyInfosList.append(GlobalData.AFamilyInfo)  #  写入familyInfo列表
+            FzLog.info("加入家庭信息：%s",GlobalData.AFamilyInfo)
+            self.infoFilledSIGNAL.emit()  #  发射信号
             self.close()
 
     def cancel(self):
