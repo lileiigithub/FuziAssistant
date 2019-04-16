@@ -90,7 +90,7 @@ class MainWindow(QMainWindow):
 
     def showDelInfoDialog(self):
         if len(GlobalData.familyInfosList) == 0:  #  列表为空
-            QMessageBox.about(self, "警告", "无信息可删除!")
+            QMessageBox.about(self, "警告", "<font size='10'>无信息可删除!</font>")
             return
         self.delInfodialog = DelInfoDialog()
         self.delInfodialog.deletedSIGNAL.connect(self.updateTableView)  # 将信号连接到槽
@@ -98,12 +98,12 @@ class MainWindow(QMainWindow):
 
     def pushFamilyInfo(self):
         if len(GlobalData.familyInfosList) == 0:  #  列表为空
-            QMessageBox.about(self, "警告", "无数据写入!")
+            QMessageBox.about(self, "警告", "<font size='10'>无数据写入!</font>")
             return
         # 将一个家庭数据 写入数据库
         theFamily = AFamily(GlobalData.lastFamilyIndex()+1)
         theFamily.insert_family_info_list(GlobalData.familyInfosList)
-        QMessageBox.about(self, "提示", "已将家庭信息写入数据库!")
+        QMessageBox.about(self, "提示", "<font size='10'>已将家庭信息写入数据库!</font>")
         FzLog.info("已将家庭信息写入数据库.")
         GlobalData.familyInfosList = []   #  提交后清空familyInfosList列表
         self.updateTableView()  # 跟新显示

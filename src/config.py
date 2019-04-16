@@ -14,7 +14,7 @@ class GlobalData(object):
     old_isMan = None
     relation = None
     AFamilyInfo = {"young_name":None,"young_isMan":None,"relation":None,"old_name":None,"old_isMan":None}
-    familyInfosList = []  # 存放新建的家庭成员们信息, 存放字典{}
+    familyInfosList = []  # 存放新建的家庭成员们信息, 存放字典 AFamilyInfo
 
     @staticmethod #  装饰器
     def lastID():
