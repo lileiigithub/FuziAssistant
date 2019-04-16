@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLa
 from datetime import datetime
 from config import Config,GlobalData
 from addInfoDialog import AddInfoDialog
+from delInfoDialog import DelInfoDialog
 from relationship import AFamily
 from fuziLog import FzLog
 
@@ -51,7 +52,7 @@ class MainWindow(QMainWindow):
         self.addButton = QPushButton("新建家庭信息")
         self.addButton.clicked.connect(self.showAddInfoDialog)
         self.delButton = QPushButton("删除家庭信息")
-        self.delButton.clicked.connect(self.delInfo)
+        self.delButton.clicked.connect(self.showDelInfoDialog)
         self.enterButton = QPushButton("提交家庭信息")
         self.enterButton.clicked.connect(self.pushFamilyInfo)
         buttonLayout = QHBoxLayout()
@@ -87,17 +88,22 @@ class MainWindow(QMainWindow):
         self.addInfodialog.infoFilledSIGNAL.connect(self.updateTableView)  #  将信号连接到槽
         self.addInfodialog.show()
 
-        # infoDialog.show()
-    def delInfo(self):
-        pass
+    def showDelInfoDialog(self):
+        if len(GlobalData.familyInfosList) == 0:  #  列表为空
+            QMessageBox.about(self, "警告", "无信息可删除!")
+            return
+        self.delInfodialog = DelInfoDialog()
+        self.delInfodialog.deletedSIGNAL.connect(self.updateTableView)  # 将信号连接到槽
+        self.delInfodialog.show()
 
     def pushFamilyInfo(self):
         if len(GlobalData.familyInfosList) == 0:  #  列表为空
-            FzLog.info("无数据写入.")
+            QMessageBox.about(self, "警告", "无数据写入!")
             return
         # 将一个家庭数据 写入数据库
         theFamily = AFamily(GlobalData.lastFamilyIndex()+1)
         theFamily.insert_family_info_list(GlobalData.familyInfosList)
+        QMessageBox.about(self, "提示", "已将家庭信息写入数据库!")
         FzLog.info("已将家庭信息写入数据库.")
         GlobalData.familyInfosList = []   #  提交后清空familyInfosList列表
         self.updateTableView()  # 跟新显示

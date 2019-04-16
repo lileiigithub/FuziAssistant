@@ -1,7 +1,5 @@
-from PyQt5.QtCore import Qt,pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QDialog,
-        QDialogButtonBox, QGridLayout, QHBoxLayout, QLabel, QLayout, QLineEdit,
-        QPushButton, QVBoxLayout, QWidget,QComboBox,QRadioButton,QGroupBox)
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 from config import Config,GlobalData
 from fuziLog import FzLog
 
@@ -72,9 +70,10 @@ class AddInfoDialog(QDialog):
         young_name = self.line_young_name.text()
         old_name = self.line_old_name.text()
         if young_name == "":
+            QMessageBox.about(self, "警告", "未填写晚辈姓名!")
             FzLog.info("未填写晚辈姓名.")
         elif old_name == "":
-            FzLog.info("未填写长辈姓名.")
+            QMessageBox.about(self, "警告", "未填写长辈姓名!")
         else:
             GlobalData.AFamilyInfo["young_name"] = self.line_young_name.text()
             GlobalData.AFamilyInfo["old_name"] = self.line_old_name.text()
