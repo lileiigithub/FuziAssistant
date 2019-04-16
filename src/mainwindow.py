@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         buttonLayout.addWidget(self.enterButton)
 
         self.infoBoard = QTableView()
-        self.setInfoBoard()  #  设置表格
+        # self.setInfoBoard()  #  设置表格
         # self.infoBoard.setHorizontalHeader()
         newLayout = QVBoxLayout()
         newLayout.addLayout(buttonLayout)
@@ -72,12 +72,14 @@ class MainWindow(QMainWindow):
         self.tabNewFamily.setLayout(newLayout)
 
     def setInfoBoard(self):
-        self.model = QStandardItemModel(0,5)
-        self.model.setHorizontalHeaderLabels(['姓名','性别','关系','姓名','性别'])
-        self.infoBoard.setModel(self.model)
+        pass
 
     def updateTableView(self):
-        self.model.clear()
+        # self.model.clear()
+        self.model = QStandardItemModel(0, 5)
+        self.model.setHorizontalHeaderLabels(['姓名', '性别', '关系', '姓名', '性别'])
+        self.infoBoard.setModel(self.model)
+        print(GlobalData.familyInfosList)
         for aInfo in GlobalData.familyInfosList:
             self.model.appendRow([QStandardItem("%s" % aInfo["young_name"]),
                                   QStandardItem("%s" % ["女", "男"][aInfo["young_isMan"]]),
@@ -85,7 +87,6 @@ class MainWindow(QMainWindow):
                                   QStandardItem("%s" % aInfo["old_name"]),
                                   QStandardItem("%s" % ["女", "男"][aInfo["old_isMan"]])])
         self.infoBoard.show()  # 显示更新
-        print(GlobalData.familyInfosList)
 
     def showAddInfoDialog(self):
         self.addInfodialog = AddInfoDialog()

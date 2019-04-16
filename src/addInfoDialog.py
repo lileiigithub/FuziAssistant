@@ -84,28 +84,23 @@ class AddInfoDialog(QDialog):
         old_name = self.line_old_name.text()
         if young_name == "":
             QMessageBox.about(self, "警告", "<font size='10'>未填写晚辈姓名!</font>")
-            FzLog.info("未填写晚辈姓名.")
         elif old_name == "":
             QMessageBox.about(self, "警告", "<font size='10'>未填写长辈姓名!</font>")
         else:
-            GlobalData.AFamilyInfo["young_name"] = self.line_young_name.text()
-            GlobalData.AFamilyInfo["old_name"] = self.line_old_name.text()
-            GlobalData.AFamilyInfo["young_isMan"] = self.box_youngman.isChecked()
-            GlobalData.AFamilyInfo["old_isMan"] = self.box_oldman.isChecked()
-            GlobalData.AFamilyInfo["relation"] = self.comb_relation.currentText()
-            GlobalData.familyInfosList.append(GlobalData.AFamilyInfo)  #  写入familyInfo列表
-            FzLog.info("加入家庭信息：%s",GlobalData.AFamilyInfo)
+            aFamilyInfo = {}   #  局部变量，成为全局变量出错
+            aFamilyInfo["young_name"] = self.line_young_name.text()
+            aFamilyInfo["old_name"] = self.line_old_name.text()
+            aFamilyInfo["young_isMan"] = self.box_youngman.isChecked()
+            aFamilyInfo["old_isMan"] = self.box_oldman.isChecked()
+            aFamilyInfo["relation"] = self.comb_relation.currentText()
+            GlobalData.familyInfosList.append(aFamilyInfo)  #  写入familyInfo列表
+            FzLog.info("加入家庭信息：%s",aFamilyInfo)
+            # print("global:",GlobalData.AFamilyInfo)
             self.infoFilledSIGNAL.emit()  #  发射信号
             self.close()
 
     def cancel(self):
         self.close()
-
-    def get_ip(self):
-        return self.ip
-
-    def get_port(self):
-        return self.port
 
 if __name__ == '__main__':
 
