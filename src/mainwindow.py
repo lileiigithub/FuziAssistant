@@ -50,10 +50,13 @@ class MainWindow(QMainWindow):
 
     def tabFamilyUI(self):
         self.addButton = QPushButton("新建家庭信息")
+        self.addButton.setFont(QFont("Roman times",16))
         self.addButton.clicked.connect(self.showAddInfoDialog)
         self.delButton = QPushButton("删除家庭信息")
+        self.delButton.setFont(QFont("Roman times", 16))
         self.delButton.clicked.connect(self.showDelInfoDialog)
         self.enterButton = QPushButton("提交家庭信息")
+        self.enterButton.setFont(QFont("Roman times", 16))
         self.enterButton.clicked.connect(self.pushFamilyInfo)
         buttonLayout = QHBoxLayout()
         buttonLayout.addWidget(self.addButton)
@@ -82,6 +85,7 @@ class MainWindow(QMainWindow):
                                   QStandardItem("%s" % aInfo["old_name"]),
                                   QStandardItem("%s" % ["女", "男"][aInfo["old_isMan"]])])
         self.infoBoard.show()  # 显示更新
+        print(GlobalData.familyInfosList)
 
     def showAddInfoDialog(self):
         self.addInfodialog = AddInfoDialog()

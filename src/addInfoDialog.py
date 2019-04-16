@@ -1,5 +1,6 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 from config import Config,GlobalData
 from fuziLog import FzLog
 
@@ -10,10 +11,14 @@ class AddInfoDialog(QDialog):
         # young
         layout_young = QHBoxLayout()
         label1 = QLabel("晚辈")
+        label1.setFont(QFont("Roman times", 15, QFont.Bold))
         self.line_young_name = QLineEdit()
+        self.line_young_name.setFont(QFont("Roman times", 15))
         self.box_youngman = QRadioButton("男")
+        self.box_youngman.setFont(QFont("Roman times", 15))
         self.box_youngman.setChecked(True)
         self.box_youngwoman = QRadioButton("女")
+        self.box_youngwoman.setFont(QFont("Roman times", 15))
         layout_youngGender = QHBoxLayout()
         layout_youngGender.addWidget(self.box_youngman)
         layout_youngGender.addWidget(self.box_youngwoman)
@@ -26,10 +31,14 @@ class AddInfoDialog(QDialog):
         # old
         layout_old = QHBoxLayout()
         label2 = QLabel("长辈")
+        label2.setFont(QFont("Roman times", 15, QFont.Bold))
         self.line_old_name = QLineEdit()
+        self.line_old_name.setFont(QFont("Roman times", 15))
         self.box_oldman = QRadioButton("男")
+        self.box_oldman.setFont(QFont("Roman times", 15))
         self.box_oldman.setChecked(True)
         self.box_oldwoman = QRadioButton("女")
+        self.box_oldwoman.setFont(QFont("Roman times", 15))
         layout_oldGender = QHBoxLayout()
         layout_oldGender.addWidget(self.box_oldman)
         layout_oldGender.addWidget(self.box_oldwoman)
@@ -41,8 +50,10 @@ class AddInfoDialog(QDialog):
         # relationship
         layout_relation = QHBoxLayout()
         label3 = QLabel("关系")
+        label3.setFont(QFont("Roman times", 15, QFont.Bold))
         self.comb_relation = QComboBox()
         self.comb_relation.addItems(Config.RELATIONSHIP)  # 添加关系选项
+        self.comb_relation.setFont(QFont("Roman times", 15))
         layout_relation.addWidget(label3)
         layout_relation.addWidget(self.comb_relation)
         # info layout
@@ -52,7 +63,9 @@ class AddInfoDialog(QDialog):
         layout_info.addLayout(layout_relation)
         # Yes/NO button
         self.YesButton = QPushButton("确定")
+        self.YesButton.setFont(QFont("Roman times", 15))
         self.NoButton = QPushButton("取消")
+        self.NoButton.setFont(QFont("Roman times", 15))
         YN_layout = QHBoxLayout()
         YN_layout.addWidget(self.YesButton)
         YN_layout.addWidget(self.NoButton)
@@ -70,10 +83,10 @@ class AddInfoDialog(QDialog):
         young_name = self.line_young_name.text()
         old_name = self.line_old_name.text()
         if young_name == "":
-            QMessageBox.about(self, "警告", "未填写晚辈姓名!")
+            QMessageBox.about(self, "警告", "<font size='10'>未填写晚辈姓名!</font>")
             FzLog.info("未填写晚辈姓名.")
         elif old_name == "":
-            QMessageBox.about(self, "警告", "未填写长辈姓名!")
+            QMessageBox.about(self, "警告", "<font size='10'>未填写长辈姓名!</font>")
         else:
             GlobalData.AFamilyInfo["young_name"] = self.line_young_name.text()
             GlobalData.AFamilyInfo["old_name"] = self.line_old_name.text()

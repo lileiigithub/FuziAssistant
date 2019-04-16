@@ -1,5 +1,6 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 from config import Config,GlobalData
 from fuziLog import FzLog
 
@@ -10,7 +11,9 @@ class DelInfoDialog(QDialog):
         # young
         layout_del = QHBoxLayout()
         label1 = QLabel("删除行的序号")
+        label1.setFont(QFont("Roman times", 15))
         self.line_del_line = QLineEdit()
+        self.line_del_line.setFont(QFont("Roman times", 15))
         layout_del.addWidget(label1)
         layout_del.addWidget(self.line_del_line)
         # Yes/NO button
@@ -44,7 +47,7 @@ class DelInfoDialog(QDialog):
 
         del(GlobalData.familyInfosList[lineNumber-1])
         self.deletedSIGNAL.emit()
-        FzLog.info("输出行：%s",lineNumber)
+        FzLog.info("删除行：%s",lineNumber)
         self.close()
 
     def cancel(self):
