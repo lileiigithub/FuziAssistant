@@ -45,20 +45,20 @@ class MainWindow(QMainWindow):
         # mainlayout.addLayout(right_layout)
         self.mainwidget.setLayout(mainlayout)
         #
-        self.setWindowTitle("福纸")
+        self.setWindowTitle("苟氏福纸")
         self.setGeometry(250,100,800,850) # posx,posy,w,h
 
     def tabFamilyUI(self):
         self.addButton = QPushButton("新建家庭")
-        self.addButton.setFont(QFont("Roman times",16))
+        self.addButton.setFont(QFont("Roman times",15))
         self.addButton.setMaximumWidth(150)
         self.addButton.clicked.connect(self.showAddInfoDialog)
         self.delButton = QPushButton("删除信息")
-        self.delButton.setFont(QFont("Roman times", 16))
+        self.delButton.setFont(QFont("Roman times", 15))
         self.delButton.setMaximumWidth(150)
         self.delButton.clicked.connect(self.showDelInfoDialog)
         self.enterButton = QPushButton("提交信息")
-        self.enterButton.setFont(QFont("Roman times", 16))
+        self.enterButton.setFont(QFont("Roman times", 15))
         self.enterButton.setMaximumWidth(150)
         self.enterButton.clicked.connect(self.pushFamilyInfo)
         buttonLayout = QHBoxLayout()
