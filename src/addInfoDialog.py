@@ -54,12 +54,18 @@ class AddInfoDialog(QDialog):
         self.comb_relation = QComboBox()
         self.comb_relation.addItems(Config.RELATIONSHIP)  # 添加关系选项
         self.comb_relation.setFont(QFont("Roman times", 15))
+        self.comb_relation.setMinimumWidth(120)   #  comb最小长度
         layout_relation.addWidget(label3)
+        layout_relation.addStretch(1)
+        # layout_relation.addSpacerItem(QSpacerItem(10,10))
         layout_relation.addWidget(self.comb_relation)
+        # layout_relation.addSpacerItem(QSpacerItem(80, 10))
+        layout_relation.addStretch(1)
         # info layout
         layout_info = QVBoxLayout()
         layout_info.addLayout(layout_young)
         layout_info.addLayout(layout_old)
+        layout_info.addSpacerItem(QSpacerItem(100, 20))
         layout_info.addLayout(layout_relation)
         # Yes/NO button
         self.YesButton = QPushButton("确定")
@@ -72,6 +78,7 @@ class AddInfoDialog(QDialog):
         # main layout and setting
         mainLayout = QVBoxLayout()
         mainLayout.addLayout(layout_info)
+        mainLayout.addSpacerItem(QSpacerItem(100, 40))
         mainLayout.addLayout(YN_layout)
         self.setLayout(mainLayout)
         self.setWindowTitle("添加成员")
@@ -83,9 +90,9 @@ class AddInfoDialog(QDialog):
         young_name = self.line_young_name.text()
         old_name = self.line_old_name.text()
         if young_name == "":
-            QMessageBox.about(self, "警告", "<font size='10'>未填写晚辈姓名!</font>")
+            QMessageBox.about(self, "警告", "<font size='6'>未填写晚辈姓名!</font>")
         elif old_name == "":
-            QMessageBox.about(self, "警告", "<font size='10'>未填写长辈姓名!</font>")
+            QMessageBox.about(self, "警告", "<font size='6'>未填写长辈姓名!</font>")
         else:
             aFamilyInfo = {}   #  局部变量，成为全局变量出错
             aFamilyInfo["young_name"] = self.line_young_name.text()

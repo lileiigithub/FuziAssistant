@@ -46,26 +46,30 @@ class MainWindow(QMainWindow):
         self.mainwidget.setLayout(mainlayout)
         #
         self.setWindowTitle("福纸")
-        self.setGeometry(250,100,1080,820) # posx,posy,w,h
+        self.setGeometry(250,100,800,850) # posx,posy,w,h
 
     def tabFamilyUI(self):
-        self.addButton = QPushButton("新建家庭信息")
+        self.addButton = QPushButton("新建家庭")
         self.addButton.setFont(QFont("Roman times",16))
+        self.addButton.setMaximumWidth(150)
         self.addButton.clicked.connect(self.showAddInfoDialog)
-        self.delButton = QPushButton("删除家庭信息")
+        self.delButton = QPushButton("删除信息")
         self.delButton.setFont(QFont("Roman times", 16))
+        self.delButton.setMaximumWidth(150)
         self.delButton.clicked.connect(self.showDelInfoDialog)
-        self.enterButton = QPushButton("提交家庭信息")
+        self.enterButton = QPushButton("提交信息")
         self.enterButton.setFont(QFont("Roman times", 16))
+        self.enterButton.setMaximumWidth(150)
         self.enterButton.clicked.connect(self.pushFamilyInfo)
         buttonLayout = QHBoxLayout()
         buttonLayout.addWidget(self.addButton)
+        # buttonLayout.addSpacerItem(QSpacerItem(100,10))
         buttonLayout.addWidget(self.delButton)
+        # buttonLayout.addSpacerItem(QSpacerItem(100, 10))
         buttonLayout.addWidget(self.enterButton)
+        buttonLayout.addStretch(1)
 
         self.infoBoard = QTableView()
-        # self.setInfoBoard()  #  设置表格
-        # self.infoBoard.setHorizontalHeader()
         newLayout = QVBoxLayout()
         newLayout.addLayout(buttonLayout)
         newLayout.addWidget(self.infoBoard)
@@ -81,11 +85,27 @@ class MainWindow(QMainWindow):
         self.infoBoard.setModel(self.model)
         print(GlobalData.familyInfosList)
         for aInfo in GlobalData.familyInfosList:
-            self.model.appendRow([QStandardItem("%s" % aInfo["young_name"]),
-                                  QStandardItem("%s" % ["女", "男"][aInfo["young_isMan"]]),
-                                  QStandardItem("%s" % aInfo["relation"]),
-                                  QStandardItem("%s" % aInfo["old_name"]),
-                                  QStandardItem("%s" % ["女", "男"][aInfo["old_isMan"]])])
+            item1 = QStandardItem("%s" % aInfo["young_name"])
+            item1.setFont(QFont("Roman times",15))
+            item1.setTextAlignment(Qt.AlignCenter)
+            item1.setEditable(False)
+            item2 = QStandardItem("%s" % ["女", "男"][aInfo["young_isMan"]])
+            item2.setFont(QFont("Roman times", 15))
+            item2.setTextAlignment(Qt.AlignCenter)
+            item2.setEditable(False)
+            item3 = QStandardItem("%s" % aInfo["relation"])
+            item3.setFont(QFont("Roman times", 15))
+            item3.setTextAlignment(Qt.AlignCenter)
+            item3.setEditable(False)
+            item4 = QStandardItem("%s" % aInfo["old_name"])
+            item4.setFont(QFont("Roman times", 15))
+            item4.setTextAlignment(Qt.AlignCenter)
+            item4.setEditable(False)
+            item5 = QStandardItem("%s" % ["女", "男"][aInfo["old_isMan"]])
+            item5.setFont(QFont("Roman times", 15))
+            item5.setTextAlignment(Qt.AlignCenter)
+            item5.setEditable(False)
+            self.model.appendRow([item1,item2,item3,item4,item5])
         self.infoBoard.show()  # 显示更新
 
     def showAddInfoDialog(self):
@@ -95,7 +115,7 @@ class MainWindow(QMainWindow):
 
     def showDelInfoDialog(self):
         if len(GlobalData.familyInfosList) == 0:  #  列表为空
-            QMessageBox.about(self, "警告", "<font size='10'>无信息可删除!</font>")
+            QMessageBox.about(self, "警告", "<font size='6'>无信息可删除!</font>")
             return
         self.delInfodialog = DelInfoDialog()
         self.delInfodialog.deletedSIGNAL.connect(self.updateTableView)  # 将信号连接到槽
@@ -103,12 +123,12 @@ class MainWindow(QMainWindow):
 
     def pushFamilyInfo(self):
         if len(GlobalData.familyInfosList) == 0:  #  列表为空
-            QMessageBox.about(self, "警告", "<font size='10'>无数据写入!</font>")
+            QMessageBox.about(self, "警告", "<font size='6'>无数据写入!</font>")
             return
         # 将一个家庭数据 写入数据库
         theFamily = AFamily(GlobalData.lastFamilyIndex()+1)
         theFamily.insert_family_info_list(GlobalData.familyInfosList)
-        QMessageBox.about(self, "提示", "<font size='10'>已将家庭信息写入数据库!</font>")
+        QMessageBox.about(self, "提示", "<font size='6'>已将家庭信息写入数据库!</font>")
         FzLog.info("已将家庭信息写入数据库.")
         GlobalData.familyInfosList = []   #  提交后清空familyInfosList列表
         self.updateTableView()  # 跟新显示
