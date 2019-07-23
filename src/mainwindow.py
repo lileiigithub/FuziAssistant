@@ -38,6 +38,7 @@ class MainWindow(QMainWindow):
         self.tabWigdet.addTab(self.tabSearch, "查询")
         self.tabWigdet.setTabPosition(QTabWidget.West)
         self.tabFamilyUI()
+        self.searchFamilyUI()
         # 布局
         mainlayout = QHBoxLayout()
         mainlayout.addWidget(self.tabWigdet)
@@ -75,8 +76,33 @@ class MainWindow(QMainWindow):
         newLayout.addWidget(self.infoBoard)
         self.tabNewFamily.setLayout(newLayout)
 
+    def searchFamilyUI(self):
+        #  搜索界面
+        self.searchEdit = QLineEdit()
+        self.searchEdit.setFont(QFont("Roman times",20))
+        self.searchEdit.setMaximumHeight(40)
+        self.searchButton = QPushButton("搜索")
+        self.searchButton.setFont(QFont("Roman times",20))
+        self.searchButton.clicked.connect(self.search_contents)
+        searchLayout = QHBoxLayout()
+        searchLayout.addWidget(self.searchEdit)
+        searchLayout.addWidget(self.searchButton)
+        self.searchInfoBoard = QTableView()
+        newLayout = QVBoxLayout()
+        newLayout.addLayout(searchLayout)
+        newLayout.addWidget(self.searchInfoBoard)
+        self.tabSearch.setLayout(newLayout)
+
+    def get_search_word(self):
+        search_words = self.searchEdit.text()
+        return search_words
+
     def setInfoBoard(self):
         pass
+
+    def search_contents(self):
+        search_words = self.get_search_word()
+        print(search_words)
 
     def updateTableView(self):
         # self.model.clear()
