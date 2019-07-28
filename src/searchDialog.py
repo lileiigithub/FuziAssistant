@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from config import Config,GlobalData
 from fuziLog import FzLog
 
-class SearchDialog(object)：
+class SearchDialog(object):
     def __init__(self, parent=None):
         super(SearchDialog, self).__init__(parent)
         # young

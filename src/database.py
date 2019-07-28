@@ -75,8 +75,29 @@ class Database(object):
         conn.close()
         return ids[-1]
 
+    @staticmethod
+    def search(_word):
+        result_list = []
+        conn = sqlite3.connect(Database.database_file)
+        c = conn.cursor()
+        word = _word.strip()
+        COMMAND = '''SELECT * FROM FAMILY_INFO'''
+        # if word == '':
+        #     COMMAND = '''SELECT * FROM FAMILY_INFO'''
+        # else:
+        #     COMMAND = '''  '''
+        c.execute(COMMAND)
+        for row in c:
+            print(row)
+            result_list.append(row)
+        conn.close()
+        return result_list
+
 if __name__ == '__main__':
     db = Database()
+    """"
     db.insert_a_family_info(2,1,"赵",1,"爷爷","钱",1)
     print(type(Database.last_id()),Database.last_id())
     print(Database.last_familyIndex())
+    """
+    db.search("")

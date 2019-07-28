@@ -9,11 +9,12 @@ from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog, QMainWindow,QLa
                              QMessageBox, QTextEdit, QGraphicsView, QTextBrowser, QGraphicsScene,QHBoxLayout,QVBoxLayout,
                              QTabWidget,QLineEdit,QDialog,QTableWidget,QTableView)
 from datetime import datetime
-from config import Config,GlobalData
+from config import GlobalData
 from addInfoDialog import AddInfoDialog
 from delInfoDialog import DelInfoDialog
 from relationship import AFamily
 from fuziLog import FzLog
+
 
 class MainWindow(QMainWindow):
     windowList = []
@@ -102,15 +103,17 @@ class MainWindow(QMainWindow):
 
     def search_contents(self):
         search_words = self.get_search_word()
-        print(search_words)
+        print("search_words:",search_words)
+        GlobalData.searchFamilyInfo(search_words)
+        self.updateSearchView()
 
-    def updateTableView(self):
+    def createFamilyInfoModel(self,_model_data):
         # self.model.clear()
-        self.model = QStandardItemModel(0, 5)
-        self.model.setHorizontalHeaderLabels(['姓名', '性别', '关系', '姓名', '性别'])
-        self.infoBoard.setModel(self.model)
-        print(GlobalData.familyInfosList)
-        for aInfo in GlobalData.familyInfosList:
+        _model = QStandardItemModel(0, 5)
+        _model.setHorizontalHeaderLabels(['姓名', '性别', '关系', '姓名', '性别'])
+        self.infoBoard.setModel(_model)
+        print(_model_data)
+        for aInfo in _model_data:
             item1 = QStandardItem("%s" % aInfo["young_name"])
             item1.setFont(QFont("Roman times",15))
             item1.setTextAlignment(Qt.AlignCenter)
@@ -131,8 +134,21 @@ class MainWindow(QMainWindow):
             item5.setFont(QFont("Roman times", 15))
             item5.setTextAlignment(Qt.AlignCenter)
             item5.setEditable(False)
-            self.model.appendRow([item1,item2,item3,item4,item5])
+            _model.appendRow([item1,item2,item3,item4,item5])
+        return _model
+
+    def updateTableView(self):
+        # self.model.clear()
+        self.info_family_model = self.createFamilyInfoModel(GlobalData.familyInfosList)
+        self.infoBoard.setModel(self.info_family_model)
+        print(GlobalData.familyInfosList)
         self.infoBoard.show()  # 显示更新
+
+    def updateSearchView(self):
+        self.search_family_model = self.createFamilyInfoModel(GlobalData.searchInfoList)
+        self.searchInfoBoard.setModel(GlobalData.searchInfoList)
+        print(GlobalData.searchInfoList)
+        self.searchInfoBoard.show()  # 显示更新
 
     def showAddInfoDialog(self):
         self.addInfodialog = AddInfoDialog()
