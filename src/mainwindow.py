@@ -88,6 +88,7 @@ class MainWindow(QMainWindow):
         searchLayout = QHBoxLayout()
         searchLayout.addWidget(self.searchEdit)
         searchLayout.addWidget(self.searchButton)
+
         self.searchInfoBoard = QTableView()
         newLayout = QVBoxLayout()
         newLayout.addLayout(searchLayout)
@@ -111,9 +112,9 @@ class MainWindow(QMainWindow):
         # self.model.clear()
         _model = QStandardItemModel(0, 5)
         _model.setHorizontalHeaderLabels(['姓名', '性别', '关系', '姓名', '性别'])
-        self.infoBoard.setModel(_model)
-        print(_model_data)
+        # self.infoBoard.setModel(_model)
         for aInfo in _model_data:
+            print("aInfo:", aInfo)
             item1 = QStandardItem("%s" % aInfo["young_name"])
             item1.setFont(QFont("Roman times",15))
             item1.setTextAlignment(Qt.AlignCenter)
@@ -145,8 +146,8 @@ class MainWindow(QMainWindow):
         self.infoBoard.show()  # 显示更新
 
     def updateSearchView(self):
-        self.search_family_model = self.createFamilyInfoModel(GlobalData.searchInfoList)
-        self.searchInfoBoard.setModel(GlobalData.searchInfoList)
+        self.search_family_model = self.createFamilyInfoModel(GlobalData.searchInfoList) # GlobalData.searchInfoList
+        self.searchInfoBoard.setModel(self.search_family_model)
         print(GlobalData.searchInfoList)
         self.searchInfoBoard.show()  # 显示更新
 

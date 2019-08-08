@@ -22,7 +22,16 @@ class GlobalData(object):
 
     @staticmethod
     def searchFamilyInfo(_word):
-        GlobalData.searchInfoList = Database.search(_word)
+        result_list = Database.search(_word)
+        for aInfo in result_list:
+            aFamilyInfo = {}
+            aFamilyInfo["young_name"] = aInfo[3]
+            aFamilyInfo["young_isMan"] = aInfo[4]
+            aFamilyInfo["relation"] = aInfo[5]
+            aFamilyInfo["old_name"] = aInfo[6]
+            aFamilyInfo["old_isMan"] = aInfo[7]
+            GlobalData.searchInfoList.append(aFamilyInfo)
+
 
 if __name__ == '__main__':
     # db = Database()
