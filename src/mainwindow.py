@@ -15,7 +15,6 @@ from delInfoDialog import DelInfoDialog
 from relationship import AFamily
 from fuziLog import FzLog
 
-
 class MainWindow(QMainWindow):
     windowList = []
 
